@@ -223,3 +223,24 @@ sup { font-size: .55em; }
   .option { min-height: 68px; font-size: var(--step-1); }
   .topic-grid { grid-template-columns: 1fr; }
 }
+
+/* Fraction pies */
+:root { --pie-b: #f2a900; --pie-empty: #e8e8ea; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --pie-empty: #3a3f4d; } }
+:root[data-theme="dark"] { --pie-empty: #3a3f4d; }
+.pie-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 14px; margin-top: 4px; }
+.feedback-why .pie-row { justify-content: flex-start; margin-top: 14px; }
+.pie-fig { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.pie-set { display: flex; gap: 6px; }
+.pie { width: 96px; height: 96px; }
+.feedback-why .pie { width: 72px; height: 72px; }
+.pie-fig figcaption { font-weight: 900; font-size: var(--step-1); }
+.pie-op { font-size: var(--step-3); font-weight: 900; color: var(--muted); }
+.pie-row > .pie-op:last-child { color: var(--accent); }
+.pie .slice { stroke: var(--ink); stroke-width: 1.5; stroke-linejoin: round; }
+.pie .slice.empty { fill: var(--pie-empty); }
+.pie .slice.a { fill: var(--accent); }
+.pie .slice.b { fill: var(--pie-b); }
+.pie .slice.gone { fill: var(--wrong-tint); stroke: var(--wrong); stroke-dasharray: 3 3; }
+.pie .rim { fill: none; stroke: var(--ink); stroke-width: 2.5; }
+@media (max-width: 560px) { .pie { width: 72px; height: 72px; } .feedback-why .pie { width: 56px; height: 56px; } }

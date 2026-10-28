@@ -58,4 +58,3 @@ To add a topic, write a generator function in one of the `levelN.js` files. The 
 
 - **Run locally:** open `dist/index.html` in a browser.
 - **Deploy:** push to `main`. The workflow in `.github/workflows/deploy.yml` publishes the `dist` folder to GitHub Pages. In the repository, go to **Settings → Pages** and set **Source** to **GitHub Actions** once.
-# math_app_for_kids

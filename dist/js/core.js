@@ -285,6 +285,27 @@
       <text x="${x0 + bw / 2}" y="${y0 + 26}" text-anchor="middle">${base} ${unit}</text>${topLabel}</svg>`;
   };
 
+  // Fraction pies. segs fills slices in order, e.g. [[3, 'a'], [2, 'b']];
+  // anything past one whole spills into extra pies (7/4 draws two pies).
+  const onePie = (d, cells) => {
+    const r = 44, c = 50;
+    let p = '';
+    for (let i = 0; i < d; i++) {
+      const a0 = -Math.PI / 2 + (i * 2 * Math.PI) / d, a1 = a0 + (2 * Math.PI) / d;
+      const pt = a => `${(c + r * Math.cos(a)).toFixed(2)} ${(c + r * Math.sin(a)).toFixed(2)}`;
+      p += `<path d="M${c} ${c} L${pt(a0)} A${r} ${r} 0 0 1 ${pt(a1)}Z" class="slice ${cells[i] || 'empty'}"/>`;
+    }
+    return `<svg class="pie" viewBox="0 0 100 100" aria-hidden="true">${p}<circle cx="${c}" cy="${c}" r="${r}" class="rim"/></svg>`;
+  };
+  M.pies = (d, segs, label = '') => {
+    const cells = [];
+    segs.forEach(([count, cls]) => { for (let i = 0; i < count; i++) cells.push(cls); });
+    let svgs = '';
+    for (let w = 0; w < Math.max(1, Math.ceil(cells.length / d)); w++) svgs += onePie(d, cells.slice(w * d, w * d + d));
+    return `<figure class="pie-fig"><div class="pie-set">${svgs}</div>${label ? `<figcaption>${label}</figcaption>` : ''}</figure>`;
+  };
+  M.pieRow = (...items) => `<div class="pie-row">${items.map(x => (x.length <= 2 ? `<span class="pie-op">${x}</span>` : x)).join('')}</div>`;
+
   M.angle = deg => {
     const cx = 60, cy = 120, L = 110, rad = (deg * Math.PI) / 180;
     const x2 = cx + L * Math.cos(rad), y2 = cy - L * Math.sin(rad);

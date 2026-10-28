@@ -130,7 +130,7 @@
     const feedback = !answered ? '' : `
       <div class="feedback ${right ? 'good' : 'bad'}" role="status">
         <p class="feedback-title">${right ? K.pick(PRAISE) + (r.streak >= 3 ? ` <span class="streak-badge">${r.streak} in a row!</span>` : '') : `Not quite. The answer is <b>${q.options[q.correct]}</b>.`}</p>
-        <p class="feedback-why">${q.explain}</p>
+        <div class="feedback-why">${q.explain}</div>
         <button class="btn primary" data-action="next" id="nextBtn">${r.index + 1 < r.questions.length ? 'Next question →' : 'See my results →'}</button>
       </div>`;
     return `
@@ -181,7 +181,7 @@
                 <li class="review-item">
                   <div class="question small">${m.q.prompt}</div>
                   <p><span class="tag bad">You said</span> ${m.q.options[m.picked]} <span class="tag good">Answer</span> ${m.q.options[m.q.correct]}</p>
-                  <p class="feedback-why">${m.q.explain}</p>
+                  <div class="feedback-why">${m.q.explain}</div>
                 </li>`).join('')}
             </ol>
           </section>` : ''}

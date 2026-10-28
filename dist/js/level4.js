@@ -103,32 +103,42 @@
         const [sn, sd] = K.simplify(top, L);
         const op = add ? '+' : '−';
         const same = d1 === d2;
+        // Pictures: each fraction as a pie, then the same pies cut into L slices.
+        const visual = K.pieRow(K.pies(d1, [[n1, 'a']], frac(n1, d1)), op, K.pies(d2, [[n2, 'b']], frac(n2, d2)), '=', '?');
+        const result = add
+          ? K.pies(L, [[a, 'a'], [b, 'b']], frac(top, L))
+          : K.pies(L, [[top, 'a'], [b, 'gone']], frac(top, L));
+        const picture = K.pieRow(K.pies(L, [[a, 'a']], frac(a, L)), op, K.pies(L, [[b, 'b']], frac(b, L)), '=', result);
         return make({
           prompt: `<div class="big">${frac(n1, d1)} ${op} ${frac(n2, d2)} = <span class="blank">?</span></div>`,
+          visual,
           answer: K.mixed(sn, sd),
           wrong: fracOptions([sn, sd], [[add ? n1 + n2 : Math.abs(n1 - n2), d1 + d2], [top, L + 1], [add ? n1 + n2 : Math.abs(n1 - n2), L], [sn + 1, sd], [sn, sd + 1], [add ? top + 1 : top + 2, L]]),
-          explain: `${same ? '' : `First give both fractions the same bottom number, ${L}: ${frac(n1, d1)} = ${frac(a, L)} and ${frac(n2, d2)} = ${frac(b, L)}. `}Now ${add ? 'add' : 'subtract'} the tops: ${a} ${op} ${b} = ${top}, so ${frac(top, L)}${sn !== top ? `, which simplifies to ${K.mixed(sn, sd)}` : ''}${sn === top && sn > sd ? ` = ${K.mixed(sn, sd)}` : ''}. Never add the bottom numbers!`
+          explain: `${same ? '' : `First cut both pies into ${L} equal slices, so the slices are the same size: ${[[n1, d1, a], [n2, d2, b]].filter(([, d]) => d !== L).map(([n, d, x]) => `${frac(n, d)} = ${frac(x, L)}`).join(' and ')}. `}Now ${add ? 'put the slices together' : `take ${b} slice${b > 1 ? 's' : ''} away`}: ${a} ${op} ${b} = ${top}, so ${frac(top, L)}${sn !== top ? `, which simplifies to ${K.mixed(sn, sd)}` : ''}${sn === top && sn > sd ? ` = ${K.mixed(sn, sd)}` : ''}. The bottom number stays the same because the slice size doesn't change.${picture}`
         });
       }
       case 3: {
         let n, d;
-        do { d = rnd(3, 10); n = rnd(1, d - 1); } while (K.gcd(n, d) !== 1);
-        const k = rnd(2, 6);
+        do { d = rnd(2, 6); n = rnd(1, d - 1); } while (K.gcd(n, d) !== 1);
+        // Keep the pie readable: at most 12 slices.
+        const k = rnd(2, Math.floor(12 / d));
         return make({
           prompt: `Simplify this fraction as much as possible.<div class="big">${frac(n * k, d * k)}</div>`,
+          visual: K.pies(d * k, [[n * k, 'a']]),
           answer: frac(n, d),
           wrong: fracOptions([n, d], [[n + 1, d], [n, d + 1], [d, n], [n * k - 1, d * k], [n + k, d + k], [n * 2, d * 3]]).filter(s => s),
-          explain: `Divide the top and bottom by ${k}: ${n * k} ÷ ${k} = ${n} and ${d * k} ÷ ${k} = ${d}. So ${frac(n * k, d * k)} = ${frac(n, d)}.`
+          explain: `Divide the top and bottom by ${k}: ${n * k} ÷ ${k} = ${n} and ${d * k} ÷ ${k} = ${d}. So ${frac(n * k, d * k)} = ${frac(n, d)}. The coloured part of the pie is exactly the same size, just cut into fewer, bigger slices.${K.pieRow(K.pies(d * k, [[n * k, 'a']], frac(n * k, d * k)), '=', K.pies(d, [[n, 'a']], frac(n, d)))}`
         });
       }
       default: {
-        const d = rnd(2, 8), w = rnd(1, 5), r = rnd(1, d - 1);
+        const d = rnd(2, 8), w = rnd(1, 3), r = rnd(1, d - 1);
         const imp = w * d + r;
         return make({
           prompt: `Write as an improper fraction.<div class="big">${w}&thinsp;${frac(r, d)}</div>`,
+          visual: K.pies(d, [[w * d, 'a'], [r, 'b']]),
           answer: frac(imp, d),
           wrong: [frac(w + r, d), frac(w * r + d, d), frac(imp, w * d), frac(w * d, r)],
-          explain: `${w} whole${w > 1 ? 's' : ''} = ${frac(w * d, d)}. Add ${frac(r, d)}: ${w * d} + ${r} = ${imp}, so ${frac(imp, d)}.`
+          explain: `${w} whole${w > 1 ? 's' : ''} = ${frac(w * d, d)}. Add ${frac(r, d)}: ${w * d} + ${r} = ${imp}, so ${frac(imp, d)}. Count the coloured slices: there are ${imp} slices, and each one is ${frac(1, d)}.${K.pieRow(K.pies(d, [[w * d, 'a'], [r, 'b']], frac(imp, d)))}`
         });
       }
     }
