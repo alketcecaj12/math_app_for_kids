@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fbf7f0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#16181f" media="(prefers-color-scheme: dark)">
+  <meta name="description" content="Math practice for children aged 7 to 11, following the Italian primary-school curriculum. Four levels, short rounds of 10 questions, instant explanations.">
+  <title>Math Trainer</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='2' y='2' width='60' height='60' rx='16' fill='%23e2553f'/%3E%3Ctext x='32' y='46' text-anchor='middle' font-family='Arial,sans-serif' font-weight='700' font-size='40' fill='white'%3E%2B%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#app">Skip to content</a>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <button class="brand" data-action="home" aria-label="Math Trainer, go to the start page">
+        <span class="brand-mark" aria-hidden="true">+</span>
+        <span class="brand-name">Math Trainer</span>
+      </button>
+      <div class="top-stats" aria-label="Your progress">
+        <span class="top-stat"><span aria-hidden="true">★</span> <strong id="totalStars">0</strong> stars</span>
+        <span class="top-stat top-stat-streak">Best streak <strong id="bestStreak">0</strong></span>
+      </div>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1"></main>
+  <div class="sr-only" aria-live="polite" id="liveRegion"></div>
+
+  <script src="js/core.js"></script>
+  <script src="js/level1.js"></script>
+  <script src="js/level2.js"></script>
+  <script src="js/level3.js"></script>
+  <script src="js/level4.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
